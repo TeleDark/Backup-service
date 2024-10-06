@@ -1,0 +1,18 @@
+services:
+  backup:
+    image: alpine:3.20
+    container_name: backup
+    hostname: alpine
+    command: ["/bin/ash", "-c", "apk add tar coreutils && crond -f -l 8"]
+    volumes:
+    # Target directory for backup
+      - ./example-dir:/example-dir
+
+    # Bash script to create backup
+      - ./Backup-scripts/Daily/:/etc/periodic/daily
+      - ./Backup-scripts/Weekly/:/etc/periodic/weekly
+      - ./Backup-scripts/Monthly/:/etc/periodic/monthly
+      - backup:/Backup
+
+volumes:
+  backup:
